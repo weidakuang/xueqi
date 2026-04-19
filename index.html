@@ -15,7 +15,12 @@
   --shadow:0 18px 44px rgba(10,18,36,.14);
   --glow:0 0 18px rgba(37,99,235,.18);--glow2:0 0 22px rgba(109,40,217,.14);
   --radius:18px;--radius2:14px;
-  --font:ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Segoe UI",Arial,sans-serif;
+  --font:"SF Pro Display","PingFang SC","Avenir Next","Microsoft YaHei","Noto Sans CJK SC","Segoe UI",Arial,sans-serif;
+  --font-mono:"SF Mono","IBM Plex Mono","Roboto Mono","Cascadia Mono","JetBrains Mono",ui-monospace,monospace;
+  --sceneA:rgba(37,99,235,.16);
+  --sceneB:rgba(109,40,217,.12);
+  --sceneC:rgba(8,145,178,.10);
+  --posterShadow:0 24px 70px rgba(10,18,36,.18);
 }
 [data-theme="dark"]{
   --bg0:#050712;--bg1:#070b18;
@@ -26,20 +31,25 @@
   --glow:0 0 18px rgba(79,231,255,.24);--glow2:0 0 24px rgba(165,139,255,.20);
   --good:#55f7c4;--warn:#ffdd57;--bad:#ff5d7a;
   --cyan:#4fe7ff;--violet:#a58bff;--blue:#4ea1ff;
+  --sceneA:rgba(79,231,255,.16);
+  --sceneB:rgba(165,139,255,.13);
+  --sceneC:rgba(78,161,255,.10);
+  --posterShadow:0 32px 78px rgba(0,0,0,.48);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;font-family:var(--font);color:var(--text);
   background:
-    radial-gradient(1100px 820px at 18% 12%, rgba(37,99,235,.16), transparent 60%),
-    radial-gradient(900px 740px at 88% 16%, rgba(109,40,217,.12), transparent 60%),
-    radial-gradient(900px 800px at 50% 92%, rgba(8,145,178,.10), transparent 60%),
+    radial-gradient(1100px 820px at 18% 12%, var(--sceneA), transparent 60%),
+    radial-gradient(900px 740px at 88% 16%, var(--sceneB), transparent 60%),
+    radial-gradient(900px 800px at 50% 92%, var(--sceneC), transparent 60%),
     linear-gradient(180deg,var(--bg0),var(--bg1));
   background-attachment:fixed;
   overflow-x:hidden;
   min-height:100vh;
   position:relative;
+  transition:background .75s ease,color .3s ease;
 }
 body:after{
   content:"";
@@ -58,7 +68,13 @@ body.inTerm:after{opacity:1}
 body.waveOnce:after{opacity:1; animation-duration:3.2s}
 @keyframes liquidSweep{to{transform:translateX(28%)}}
 
-.wrap{max-width:1260px;margin:0 auto;padding:18px 16px 36px;position:relative;z-index:1}
+.wrap{
+  max-width:1260px;margin:0 auto;padding:18px 16px 36px;position:relative;z-index:1;
+  display:flex;flex-direction:column;gap:14px;
+}
+.focusBanner{order:1}
+.dash{order:2}
+.grid{order:3}
 .topbar{
   display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
   padding:14px;border:1px solid var(--stroke);border-radius:var(--radius);
@@ -144,7 +160,22 @@ body.inTerm .topbar:after{opacity:1}
 .dot.good{background:var(--good);box-shadow:0 0 10px rgba(22,163,74,.22)}
 .dot.warn{background:var(--warn);box-shadow:0 0 10px rgba(180,83,9,.22)}
 .dot.bad{background:var(--bad);box-shadow:0 0 10px rgba(220,38,38,.20)}
-.mono{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"ss01" 1}
+.mono{
+  font-family:var(--font-mono);
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"ss01" 1;
+}
+
+body[data-scene="morningPrep"]{--sceneA:rgba(245,158,11,.18);--sceneB:rgba(37,99,235,.14);--sceneC:rgba(251,191,36,.10)}
+body[data-scene="commuteIn"]{--sceneA:rgba(14,165,233,.20);--sceneB:rgba(37,99,235,.16);--sceneC:rgba(34,211,238,.12)}
+body[data-scene="classroom"]{--sceneA:rgba(37,99,235,.24);--sceneB:rgba(109,40,217,.16);--sceneC:rgba(8,145,178,.12)}
+body[data-scene="campus"]{--sceneA:rgba(59,130,246,.20);--sceneB:rgba(16,185,129,.12);--sceneC:rgba(99,102,241,.10)}
+body[data-scene="dismissal"]{--sceneA:rgba(249,115,22,.24);--sceneB:rgba(244,63,94,.18);--sceneC:rgba(251,191,36,.14)}
+body[data-scene="commuteHome"]{--sceneA:rgba(236,72,153,.18);--sceneB:rgba(109,40,217,.16);--sceneC:rgba(251,146,60,.12)}
+body[data-scene="night"]{--sceneA:rgba(99,102,241,.18);--sceneB:rgba(37,99,235,.12);--sceneC:rgba(59,130,246,.10)}
+body[data-scene="rest"]{--sceneA:rgba(234,179,8,.16);--sceneB:rgba(34,197,94,.11);--sceneC:rgba(14,165,233,.10)}
+body[data-scene="vacation"]{--sceneA:rgba(244,114,182,.14);--sceneB:rgba(168,85,247,.12);--sceneC:rgba(56,189,248,.10)}
+body[data-scene="manual"]{--sceneA:rgba(244,63,94,.18);--sceneB:rgba(249,115,22,.14);--sceneC:rgba(236,72,153,.12)}
+body[data-scene="idle"]{--sceneA:rgba(37,99,235,.14);--sceneB:rgba(109,40,217,.10);--sceneC:rgba(8,145,178,.08)}
 
 .swap{display:inline-block;will-change:transform,opacity}
 .swap.out{animation:swapOut .16s ease forwards}
@@ -530,12 +561,338 @@ textarea{min-height:80px;resize:vertical}
   align-items:flex-end;
 }
 
+.focusBanner{
+  margin-top:0;
+  min-height:clamp(280px,46vw,396px);
+  padding:clamp(18px,3vw,26px);
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);
+  gap:18px;
+  align-items:stretch;
+  justify-content:stretch;
+  border-radius:28px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.74), rgba(255,255,255,.18)),
+    radial-gradient(circle at 18% 18%, var(--sceneA), transparent 44%),
+    radial-gradient(circle at 88% 20%, var(--sceneB), transparent 46%),
+    linear-gradient(145deg, rgba(255,255,255,.58), rgba(255,255,255,.12));
+  box-shadow:var(--posterShadow), inset 0 1px 0 rgba(255,255,255,.34);
+  isolation:isolate;
+}
+[data-theme="dark"] .focusBanner{
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02)),
+    radial-gradient(circle at 18% 18%, var(--sceneA), transparent 44%),
+    radial-gradient(circle at 88% 20%, var(--sceneB), transparent 46%),
+    linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow:var(--posterShadow), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.focusBanner:before{
+  content:"";
+  position:absolute;inset:-18%;
+  background:
+    radial-gradient(circle at 25% 30%, rgba(255,255,255,.38), transparent 30%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,.16), transparent 28%);
+  mix-blend-mode:screen;
+  opacity:.55;
+  pointer-events:none;
+  animation:heroBreath 8s ease-in-out infinite;
+}
+.focusBanner:after{
+  content:"";
+  position:absolute;inset:auto -18% -28% 24%;height:62%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.42), transparent 78%);
+  filter:blur(18px);
+  transform:rotate(-7deg);
+  opacity:.36;
+  pointer-events:none;
+  animation:none;
+}
+body.inTerm .focusBanner:after{opacity:.36}
+@keyframes heroBreath{
+  0%,100%{transform:scale(1) translate3d(0,0,0)}
+  50%{transform:scale(1.05) translate3d(0,-8px,0)}
+}
+.heroBurst{
+  position:absolute;right:-8%;top:-16%;
+  width:min(44vw,440px);aspect-ratio:1/1;border-radius:50%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,.92) 0%, rgba(255,255,255,.12) 26%, transparent 64%),
+    radial-gradient(circle, var(--sceneB) 0%, transparent 58%);
+  filter:blur(4px);
+  opacity:.82;
+  pointer-events:none;
+  animation:heroOrbit 11s linear infinite;
+}
+@keyframes heroOrbit{to{transform:rotate(360deg)}}
+.fbLeft,.fbRight{position:relative;z-index:1}
+.fbLeft{
+  display:flex;flex-direction:column;gap:12px;
+  min-width:0;
+  justify-content:flex-end;
+}
+.sceneEyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  width:max-content;max-width:100%;
+  padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.38);
+  background:rgba(255,255,255,.30);
+  letter-spacing:.24em;font-size:11px;font-weight:1400;color:var(--muted);
+  backdrop-filter:blur(12px);
+}
+[data-theme="dark"] .sceneEyebrow{
+  border-color:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+}
+.focusBanner .k{
+  font-size:12px;color:var(--muted);font-weight:1400;letter-spacing:.12em;text-transform:uppercase;
+}
+.focusBanner .v{
+  font-size:clamp(32px,6vw,64px);
+  font-weight:1500;
+  line-height:.98;
+  letter-spacing:-.03em;
+  max-width:10ch;
+  text-wrap:balance;
+}
+.sceneLine{
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+}
+.sceneChip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 12px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.34);
+  background:rgba(255,255,255,.24);
+  color:var(--text);font-size:12px;font-weight:1300;
+  backdrop-filter:blur(12px);
+}
+[data-theme="dark"] .sceneChip{
+  border-color:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+}
+.focusBanner .hint{
+  font-size:13px;line-height:1.55;max-width:52ch;color:var(--muted);
+}
+.heroTrail{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+  margin-top:auto;
+}
+.trailCard{
+  border:1px solid rgba(255,255,255,.28);
+  background:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.14));
+  border-radius:18px;
+  padding:14px;
+  min-height:92px;
+  display:flex;flex-direction:column;gap:8px;justify-content:flex-end;
+  box-shadow:0 18px 30px rgba(10,18,36,.10);
+  backdrop-filter:blur(14px);
+}
+[data-theme="dark"] .trailCard{
+  border-color:rgba(255,255,255,.10);
+  background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  box-shadow:0 18px 30px rgba(0,0,0,.28);
+}
+.trailK{
+  font-size:11px;color:var(--muted);font-weight:1400;letter-spacing:.14em;text-transform:uppercase;
+}
+.trailV{
+  font-size:18px;font-weight:1400;line-height:1.15;
+}
+.trailSub{
+  font-size:12px;color:var(--muted);
+}
+.fbRight{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 108px;
+  gap:12px;
+  align-items:end;
+}
+.heroDial{
+  min-height:100%;
+  border:1px solid rgba(255,255,255,.28);
+  background:linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.12));
+  border-radius:24px;
+  padding:18px 18px 16px;
+  display:flex;flex-direction:column;justify-content:flex-end;gap:12px;
+  box-shadow:0 24px 40px rgba(10,18,36,.12);
+  backdrop-filter:blur(16px);
+}
+[data-theme="dark"] .heroDial{
+  border-color:rgba(255,255,255,.10);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow:0 24px 40px rgba(0,0,0,.32);
+}
+.heroDialLabel{
+  font-size:12px;color:var(--muted);font-weight:1400;letter-spacing:.14em;text-transform:uppercase;
+}
+.bigClock{
+  font-size:clamp(34px,6vw,58px);
+  font-weight:1500;
+  letter-spacing:-.04em;
+  line-height:.95;
+}
+.heroProgress{
+  height:14px;border-radius:999px;
+  background:rgba(10,18,36,.08);
+  border:1px solid rgba(18,33,70,.10);
+  overflow:hidden;
+  position:relative;
+}
+[data-theme="dark"] .heroProgress{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.10);
+}
+.heroProgressBar{
+  width:0;height:100%;
+  background:linear-gradient(90deg, rgba(255,255,255,.95), rgba(37,99,235,.82), rgba(244,63,94,.70));
+  box-shadow:0 0 22px rgba(255,255,255,.42);
+  transition:width .55s cubic-bezier(.2,.75,.2,1);
+  position:relative;
+}
+.heroProgressBar:after{
+  content:"";position:absolute;inset:-20%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.52), transparent);
+  animation:barFlow 1.8s linear infinite;
+}
+.focusBanner .sub{
+  font-size:12px;color:var(--muted);font-weight:1300;
+}
+.scenePulse{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;
+}
+.pulseLabel{
+  font-size:11px;color:var(--muted);text-align:center;letter-spacing:.16em;text-transform:uppercase;
+}
+.slot.active{
+  border-color:rgba(37,99,235,.45);
+  box-shadow:0 22px 34px rgba(37,99,235,.12),var(--glow);
+  transform:translateY(-2px) scale(1.01);
+}
+[data-theme="dark"] .slot.active{border-color:rgba(79,231,255,.35)}
+.slot.upcoming{
+  border-color:rgba(109,40,217,.26);
+  box-shadow:0 14px 26px rgba(109,40,217,.08);
+}
+.tag.hot{
+  border-color:rgba(244,63,94,.34);
+  color:rgba(244,63,94,.98);
+  background:rgba(255,255,255,.76);
+}
+[data-theme="dark"] .tag.hot{
+  background:rgba(255,255,255,.08);
+}
+.transitionFX{
+  position:fixed;inset:0;z-index:120;pointer-events:none;
+  display:grid;place-items:center;
+  opacity:0;overflow:hidden;
+}
+.transitionFX.show{animation:fxVisibility 1s ease forwards}
+.transitionFX.soft .transitionFX__wash{
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,.56) 0%, rgba(255,255,255,.08) 24%, transparent 58%),
+    radial-gradient(circle at center, var(--sceneA) 0%, transparent 64%);
+}
+.transitionFX.intense .transitionFX__wash{
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,.96) 0%, rgba(255,255,255,.18) 20%, transparent 58%),
+    radial-gradient(circle at center, rgba(249,115,22,.42) 0%, rgba(244,63,94,.28) 34%, transparent 70%);
+}
+.transitionFX__wash,
+.transitionFX__scan{
+  position:absolute;inset:-16%;
+}
+.transitionFX__wash{
+  filter:blur(18px);
+  transform:scale(.72);
+  opacity:0;
+  animation:fxWash .95s cubic-bezier(.16,.84,.28,1) forwards;
+}
+.transitionFX__ring{
+  position:absolute;
+  left:50%;top:50%;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:50%;
+  width:min(68vw,780px);height:min(68vw,780px);
+  box-shadow:0 0 0 1px rgba(255,255,255,.10),0 0 80px rgba(255,255,255,.22);
+  transform:translate(-50%,-50%) scale(.42);
+  opacity:0;
+  animation:fxRing .95s cubic-bezier(.16,.84,.28,1) forwards;
+}
+.transitionFX__scan{
+  background:
+    linear-gradient(180deg, transparent, rgba(255,255,255,.22), transparent),
+    repeating-linear-gradient(180deg, rgba(255,255,255,.05) 0 2px, transparent 2px 6px);
+  mix-blend-mode:screen;
+  transform:translateY(34%);
+  opacity:0;
+  animation:fxScan .95s ease forwards;
+}
+.transitionFX__content{
+  position:relative;z-index:1;
+  width:min(92vw,820px);
+  text-align:center;
+  padding:18px 24px;
+}
+.transitionFX__k{
+  letter-spacing:.34em;
+  text-transform:uppercase;
+  font-size:12px;
+  font-weight:1400;
+  color:rgba(255,255,255,.88);
+  text-shadow:0 0 20px rgba(255,255,255,.22);
+}
+.transitionFX__title{
+  margin-top:12px;
+  font-size:clamp(32px,6vw,72px);
+  font-weight:1500;
+  line-height:.94;
+  letter-spacing:-.05em;
+  color:#fff;
+  text-shadow:0 12px 40px rgba(0,0,0,.22);
+}
+.transitionFX__sub{
+  margin-top:12px;
+  font-size:13px;
+  color:rgba(255,255,255,.88);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+@keyframes fxVisibility{
+  0%,100%{opacity:0}
+  12%,74%{opacity:1}
+}
+@keyframes fxWash{
+  0%{opacity:0;transform:scale(.54)}
+  22%{opacity:1}
+  100%{opacity:0;transform:scale(1.26)}
+}
+@keyframes fxRing{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.42)}
+  18%{opacity:.95}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.18)}
+}
+@keyframes fxScan{
+  0%{opacity:0;transform:translateY(36%)}
+  18%{opacity:.75}
+  100%{opacity:0;transform:translateY(-36%)}
+}
+
 .testPulse{animation:pulse .55s ease}
 @keyframes pulse{50%{transform:translateY(-2px);box-shadow:0 18px 44px rgba(10,18,36,.18)}}
 
 @media (max-width:520px){
   .title{min-width:200px}
   .fbLeft{min-width:200px}
+}
+@media (max-width:980px){
+  .focusBanner{grid-template-columns:1fr}
+  .fbRight{grid-template-columns:minmax(0,1fr) 92px}
+}
+@media (max-width:680px){
+  .heroTrail{grid-template-columns:1fr}
+  .fbRight{grid-template-columns:1fr}
+  .scenePulse{justify-content:flex-start}
+  .focusBanner .v{max-width:100%}
 }
 </style>
 </head>
@@ -561,9 +918,59 @@ textarea{min-height:80px;resize:vertical}
     </div>
   </div>
 
+  <div class="focusBanner" id="focusBanner">
+    <div class="heroBurst" aria-hidden="true"></div>
+    <div class="fbLeft">
+      <div class="sceneEyebrow mono swap" id="sceneEyebrow">LIVE SCENE</div>
+      <div class="k">当前时段舞台</div>
+      <div class="v swap" id="focusTitle">—</div>
+      <div class="sceneLine">
+        <span class="sceneChip swap" id="sceneChip">阶段 · —</span>
+        <span class="sceneChip mono" id="sceneRange">--:-- → --:--</span>
+      </div>
+      <div class="hint mono" id="focusDesc">—</div>
+      <div class="heroTrail">
+        <div class="trailCard">
+          <span class="trailK">冲击提示</span>
+          <span class="trailV swap" id="scenePulseText">等待切换</span>
+          <span class="trailSub mono" id="focusMeterSub">系统正在追踪本日时段波形</span>
+        </div>
+        <div class="trailCard">
+          <span class="trailK">下一波</span>
+          <span class="trailV mono swap" id="focusNext">—</span>
+          <span class="trailSub mono" id="sceneProgressText">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="fbRight">
+      <div class="heroDial">
+        <div class="heroDialLabel">当前时段剩余</div>
+        <div class="bigClock mono">
+          <span id="focusRemainFlap" class="swap mono" style="font-size:inherit;font-weight:inherit;" aria-label="当前时段剩余">--:--:--</span>
+        </div>
+        <div class="heroProgress"><div class="heroProgressBar" id="sceneProgressBar"></div></div>
+        <div class="sub mono" id="sceneProgressMeta">等待载入</div>
+      </div>
+
+      <div class="scenePulse">
+        <div class="flipClock" id="flipClock" title="场景切换卡牌">
+          <div class="inner">
+            <div class="face front">
+              <div class="clockIcon">
+                <div class="clockHand1"></div>
+                <div class="clockHand2"></div>
+              </div>
+            </div>
+            <div class="face back mono" id="sceneFlipText">SYNC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="dash" id="dash">
     <div class="card" id="cardStatus">
-      <h4>状态指示（理论推断 / 手动覆盖）</h4>
+      <h4>当前播报（理论推断 / 手动覆盖）</h4>
       <div class="swap" style="font-size:16px;font-weight:1400;letter-spacing:.3px" id="liveStatus">—</div>
       <div class="small mono" id="liveNext">—</div>
     </div>
@@ -597,32 +1004,6 @@ textarea{min-height:80px;resize:vertical}
         <span class="mono" style="font-weight:1400;color:var(--muted);padding-bottom:2px">天</span>
       </div>
       <div class="small" id="statsSub">—</div>
-    </div>
-  </div>
-
-  <div class="focusBanner" id="focusBanner">
-    <div class="fbLeft">
-      <div class="k">当前时段倒计时</div>
-      <div class="v swap" id="focusTitle">—</div>
-      <div class="hint mono" id="focusDesc">—</div>
-    </div>
-    <div class="fbRight">
-      <div class="bigClock mono">
-        <span id="focusRemainFlap" class="swap mono" style="font-size:clamp(22px,6.6vw,34px);font-weight:1400;" aria-label="当前时段剩余">--:--:--</span>
-      </div>
-      <div class="sub mono swap" id="focusNext">—</div>
-
-      <div class="flipClock" id="flipClock" title="卡牌动画">
-        <div class="inner">
-          <div class="face front">
-            <div class="clockIcon">
-              <div class="clockHand1"></div>
-              <div class="clockHand2"></div>
-            </div>
-          </div>
-          <div class="face back">TEST</div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -718,6 +1099,17 @@ textarea{min-height:80px;resize:vertical}
       </div>
     </div>
     <div class="modalBody" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="transitionFX" id="transitionFX" aria-hidden="true">
+  <div class="transitionFX__wash"></div>
+  <div class="transitionFX__ring"></div>
+  <div class="transitionFX__scan"></div>
+  <div class="transitionFX__content">
+    <div class="transitionFX__k mono" id="transitionKick">PHASE SHIFT</div>
+    <div class="transitionFX__title" id="transitionTitle">状态切换</div>
+    <div class="transitionFX__sub mono" id="transitionSub">—</div>
   </div>
 </div>
 
@@ -838,6 +1230,20 @@ function defaultPeriods(){
     {title:"第7节课",start:"15:40",end:"16:20",desc:"课程 7：按需填写科目与重点。"}
   ];
 }
+
+const SCENE_PRESETS={
+  idle:{eyebrow:"SYSTEM IDLE",chip:"待命轨道",pulse:"等待下一次有效切换",flip:"IDLE",headline:"状态切换",kicker:"PHASE SHIFT",intensity:"soft"},
+  manual:{eyebrow:"MANUAL OVERRIDE",chip:"人工接管",pulse:"手动状态已接管自动播报",flip:"LOCK",headline:"手动状态切换",kicker:"MANUAL SHIFT",intensity:"soft"},
+  morningPrep:{eyebrow:"PRE-LAUNCH",chip:"晨间启动",pulse:"起床到出发的预热段",flip:"AM",headline:"晨间启动",kicker:"MORNING RISE",intensity:"soft"},
+  commuteIn:{eyebrow:"CITY FLOW",chip:"进校通道",pulse:"已进入通勤链路",flip:"MOVE",headline:"切入通勤节奏",kicker:"CITY FLOW",intensity:"soft"},
+  classroom:{eyebrow:"CLASS MODE",chip:"上课高压区",pulse:"已进入课堂专注段",flip:"LIVE",headline:"进入上课节奏",kicker:"CLASS MODE",intensity:"soft"},
+  campus:{eyebrow:"CAMPUS HOLD",chip:"课后缓冲",pulse:"校内收束与过渡中",flip:"HOLD",headline:"切入课后缓冲",kicker:"CAMPUS HOLD",intensity:"soft"},
+  dismissal:{eyebrow:"DISMISSAL",chip:"放学释能",pulse:"放学通道已打开",flip:"GO",headline:"放学模式启动",kicker:"DISMISSAL BURST",intensity:"intense"},
+  commuteHome:{eyebrow:"RETURN ARC",chip:"返程轨道",pulse:"已进入回家通道",flip:"HOME",headline:"返程通道开启",kicker:"RETURN ARC",intensity:"intense"},
+  night:{eyebrow:"NIGHT SHIFT",chip:"夜间安排",pulse:"晚间节奏接管今天尾声",flip:"PM",headline:"夜间安排接管",kicker:"NIGHT SHIFT",intensity:"soft"},
+  rest:{eyebrow:"OFF MODE",chip:"休息日",pulse:"今日以低强度运行",flip:"REST",headline:"切入休息日节奏",kicker:"OFF MODE",intensity:"soft"},
+  vacation:{eyebrow:"OUT OF TERM",chip:"非教学期",pulse:"当前不在教学区间内",flip:"FREE",headline:"切入非教学期",kicker:"OUT OF TERM",intensity:"soft"}
+};
 
 function buildDefaultData(){
   const todayStr=fmtDate(new Date());
@@ -1191,6 +1597,191 @@ function segmentsForDay(dateStr){
   return {segs,typeInfo};
 }
 
+function resolveSceneKey(current,typeInfo){
+  if(typeInfo.type==="rest") return "rest";
+  if(typeInfo.type==="vacation") return "vacation";
+  if(!current) return "idle";
+  const name=current.name||"";
+  if(name.includes("居家准备")) return "morningPrep";
+  if(name.includes("出发途中") || name.includes("通勤 / 到校")) return "commuteIn";
+  if(/^第\d+节课/.test(name)) return "classroom";
+  if(name.includes("课后衔接")) return "campus";
+  if(name.includes("返程通勤")) return "dismissal";
+  if(name.includes("返家途中")) return "commuteHome";
+  if(name.includes("晚间安排")) return "night";
+  if(current.tag==="good") return "classroom";
+  if(current.tag==="violet") return "commuteHome";
+  if(current.tag==="warn") return "rest";
+  return "commuteIn";
+}
+
+function getActiveSegmentInfo(segs,curMin){
+  for(let i=0;i<segs.length;i++){
+    const a=toMinutes(segs[i].start);
+    const b=toMinutes(segs[i].end);
+    if(curMin>=a && curMin<b){
+      const span=Math.max(1,b-a);
+      return {
+        current:segs[i],
+        next:segs[i+1]||null,
+        index:i,
+        startMin:a,
+        endMin:b,
+        leftSec:Math.max(0,Math.floor((b-curMin)*60)),
+        progress:clamp((curMin-a)/span,0,1)
+      };
+    }
+  }
+  if(!segs.length) return {current:null,next:null,index:-1,startMin:0,endMin:0,leftSec:0,progress:0};
+  const last=segs[segs.length-1];
+  return {current:last,next:null,index:segs.length-1,startMin:toMinutes(last.start),endMin:toMinutes(last.end),leftSec:0,progress:1};
+}
+
+function flipSceneClock(text){
+  const fc=document.getElementById("flipClock");
+  const back=document.getElementById("sceneFlipText");
+  if(back && text) back.textContent=text;
+  if(!fc) return;
+  fc.classList.remove("flipped");
+  void fc.offsetWidth;
+  fc.classList.add("flipped");
+  setTimeout(()=>fc.classList.remove("flipped"),760);
+}
+
+function playTransitionFX({kicker,title,sub,intense,flipText}){
+  const fx=document.getElementById("transitionFX");
+  if(!fx) return;
+  document.getElementById("transitionKick").textContent=kicker||"PHASE SHIFT";
+  document.getElementById("transitionTitle").textContent=title||"状态切换";
+  document.getElementById("transitionSub").textContent=sub||"—";
+  fx.classList.remove("show","soft","intense");
+  void fx.offsetWidth;
+  fx.classList.add("show", intense?"intense":"soft");
+  flipSceneClock(flipText||"SYNC");
+  waveOnce();
+  pulseDash();
+  clearTimeout(state.transitionTimer);
+  state.transitionTimer=setTimeout(()=>fx.classList.remove("show","soft","intense"),1100);
+}
+
+function buildSceneSnapshot(now){
+  const s=state.data.settings;
+  const todayStr=fmtDate(now);
+  const curMin=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+  const ms=s.manualStatus||{enabled:false,text:"",until:"",nextText:""};
+
+  if(ms.enabled && (ms.text||"").trim()){
+    let remain="--:--:--";
+    let progress=.78;
+    let progressText="手动状态接管中";
+    if(ms.until){
+      const untilMin=toMinutes(ms.until);
+      const leftSec=Math.max(0,Math.floor((untilMin-curMin)*60));
+      const o=diffDHMS(leftSec*1000);
+      remain=`${pad2(o.h)}:${pad2(o.m)}:${pad2(o.s)}`;
+      progress=leftSec<=0?1:clamp(1-leftSec/(3*60*60),.14,.96);
+      progressText=`有效至 ${ms.until}`;
+      if(leftSec<=0){
+        ms.enabled=false;ms.text="";ms.until="";ms.nextText="";
+        s.manualStatus=ms;
+        log("AUTO","手动状态超时自动关闭");
+        saveSoon();
+      }
+    }
+    return {
+      mode:"manual",
+      token:`manual:${(ms.text||"").trim()}:${ms.until||""}:${ms.nextText||""}`,
+      sceneKey:"manual",
+      preset:SCENE_PRESETS.manual,
+      segment:null,
+      next:null,
+      statusLabel:`手动状态：${ms.text.trim()}`,
+      nextLabel:ms.nextText?`下一步：${ms.nextText}`:"下一步：—",
+      heroNextText:ms.nextText?ms.nextText:"等待手动更新",
+      focusTitle:ms.text.trim(),
+      focusDesc:ms.until?`手动接管播报，有效至 ${ms.until}`:"手动接管播报，未设置自动结束时间",
+      remain,
+      progress,
+      progressText,
+      rangeText:ms.until?`有效至 ${ms.until}`:"手动模式",
+      chipText:"人工接管",
+      sceneMeta:`场景：手动覆盖`,
+      meterSub:`人工接管会覆盖自动时段识别`,
+      pulseText:SCENE_PRESETS.manual.pulse,
+      flipText:SCENE_PRESETS.manual.flip
+    };
+  }
+
+  const {segs,typeInfo}=segmentsForDay(todayStr);
+  const active=getActiveSegmentInfo(segs,curMin);
+  const current=active.current;
+  const next=active.next;
+  const sceneKey=resolveSceneKey(current,typeInfo);
+  const preset=SCENE_PRESETS[sceneKey]||SCENE_PRESETS.idle;
+  const remainObj=diffDHMS(active.leftSec*1000);
+  const remain=`${pad2(remainObj.h)}:${pad2(remainObj.m)}:${pad2(remainObj.s)}`;
+  const progressText=current?`已推进 ${(active.progress*100).toFixed(0)}% · 剩余 ${remain}`:"等待有效时段";
+  const rangeText=current?`${current.start} → ${current.end}`:"--:-- → --:--";
+
+  return {
+    mode:"auto",
+    token:current?`${todayStr}:${current.start}-${current.end}:${current.name}`:`idle:${todayStr}`,
+    sceneKey,
+    preset,
+    segment:current,
+    next,
+    typeInfo,
+    statusLabel:current?`${current.name}（${typeLabel(typeInfo.type)}）`:"—",
+    nextLabel:next?`下一时段：${next.name}（${next.start}）`:"下一时段：—",
+    heroNextText:next?`${next.name} · ${next.start}`:"今日末段已锁定",
+    focusTitle:current?current.name:"—",
+    focusDesc:current?`${typeInfo.reason} · 时段：${current.start}-${current.end}`:"—",
+    remain,
+    progress:active.progress,
+    progressText,
+    rangeText,
+    chipText:preset.chip,
+    sceneMeta:current?`场景：${preset.chip} · ${typeLabel(typeInfo.type)}`:`场景：待命`,
+    meterSub:current?`${current.start}-${current.end} · ${preset.chip}`:`等待有效时段`,
+    pulseText:next?`准备切到 ${next.name}`:preset.pulse,
+    flipText:preset.flip
+  };
+}
+
+function triggerSceneTransition(prevScene,nextScene,force){
+  const nextPreset=(nextScene&&nextScene.preset)||SCENE_PRESETS.idle;
+  const prevLabel=prevScene?(prevScene.segment?prevScene.segment.name:prevScene.focusTitle):"上一态";
+  const nextLabel=nextScene?(nextScene.segment?nextScene.segment.name:nextScene.focusTitle):"下一态";
+  let kicker=nextPreset.kicker||"PHASE SHIFT";
+  let title=nextPreset.headline||"状态切换";
+  let sub=`${prevLabel} → ${nextLabel}`;
+  let intense=force||nextPreset.intensity==="intense";
+
+  if(nextScene && nextScene.sceneKey==="dismissal"){
+    title="放学模式启动";
+    sub=prevScene&&prevScene.segment?`${prevScene.segment.name} → 返程通勤（地铁）`:"校内节奏 → 放学返程";
+    intense=true;
+  }else if(nextScene && nextScene.sceneKey==="commuteHome"){
+    title="回家通道开启";
+    intense=true;
+  }else if(nextScene && nextScene.sceneKey==="classroom" && prevScene && prevScene.sceneKey==="classroom"){
+    title="课程切换";
+    sub=`${prevLabel} → ${nextLabel}`;
+  }else if(nextScene && nextScene.sceneKey==="night"){
+    title="夜间安排接管";
+  }else if(nextScene && nextScene.sceneKey==="manual"){
+    title="手动状态切换";
+  }
+
+  playTransitionFX({
+    kicker,
+    title,
+    sub,
+    intense,
+    flipText:(nextScene&&nextScene.flipText)||nextPreset.flip||"SYNC"
+  });
+}
+
 function teachingDaysList(){
   const s=state.data.settings;
   const days=enumerateDays(s.termStart,s.termEnd);
@@ -1231,9 +1822,18 @@ function renderTimeline(){
   const {segs}=segmentsForDay(dstr);
   const timeline=document.getElementById("timeline");
   timeline.innerHTML="";
+  const now=new Date();
+  const todayStr=fmtDate(now);
+  const curMin=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+  const active=dstr===todayStr?getActiveSegmentInfo(segs,curMin):null;
+  const activeKey=active&&active.current?`${active.current.start}-${active.current.end}`:"";
+  const nextKey=active&&active.next?`${active.next.start}-${active.next.end}`:"";
   for(const s of segs){
     const slot=document.createElement("div");
     slot.className="slot";
+    const segKey=`${s.start}-${s.end}`;
+    if(segKey===activeKey) slot.classList.add("active");
+    else if(segKey===nextKey) slot.classList.add("upcoming");
 
     const left=document.createElement("div");
     left.className="left";
@@ -1247,6 +1847,17 @@ function renderTimeline(){
 
     const right=document.createElement("div");
     right.className="right";
+    if(segKey===activeKey){
+      const live=document.createElement("span");
+      live.className="tag hot";
+      live.textContent="LIVE";
+      right.appendChild(live);
+    }else if(segKey===nextKey){
+      const nextTag=document.createElement("span");
+      nextTag.className="tag cyan";
+      nextTag.textContent="NEXT";
+      right.appendChild(nextTag);
+    }
     const tag=document.createElement("span");
     tag.className=`tag ${s.tag||""}`;
     tag.textContent=s.tag==="good"?"课程":(s.tag==="cyan"?"通勤":(s.tag==="violet"?"晚间":"休息"));
@@ -1508,83 +2119,34 @@ function renderCalendar(){
 }
 
 function updateLive(now){
-  const s=state.data.settings;
-  const todayStr=fmtDate(now);
+  const scene=buildSceneSnapshot(now);
+  document.body.setAttribute("data-scene",scene.sceneKey||"idle");
 
-  const ms=s.manualStatus||{enabled:false,text:"",until:"",nextText:""};
-  if(ms.enabled && (ms.text||"").trim()){
-    const label=`手动状态：${ms.text.trim()}`;
-    swapText(document.getElementById("liveStatus"),label);
-    document.getElementById("liveNext").textContent=ms.nextText?`下一步：${ms.nextText}`:"—";
+  const shouldTransition=state.sceneReady && scene.token!==state.lastSceneToken;
+  if(shouldTransition) triggerSceneTransition(state.lastSceneSnapshot,scene,false);
 
-    swapText(document.getElementById("focusTitle"),label);
-    document.getElementById("focusDesc").textContent=ms.until?`有效至 ${ms.until}`:"有效期：未设置";
+  swapText(document.getElementById("liveStatus"),scene.statusLabel||"—");
+  document.getElementById("liveNext").textContent=scene.nextLabel||"—";
 
-    let remain="--:--:--";
-    if(ms.until){
-      const untilMin=toMinutes(ms.until);
-      const curMin=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
-      const leftSec=Math.max(0,Math.floor((untilMin-curMin)*60));
-      const o=diffDHMS(leftSec*1000);
-      remain=`${pad2(o.h)}:${pad2(o.m)}:${pad2(o.s)}`;
-      if(leftSec<=0){
-        ms.enabled=false;ms.text="";ms.until="";ms.nextText="";
-        s.manualStatus=ms;
-        log("AUTO","手动状态超时自动关闭");
-        saveSoon();
-      }
-    }
-    flapSet(document.getElementById("focusRemainFlap"),remain,22);
-    swapText(document.getElementById("focusNext"),ms.nextText?`下一步：${ms.nextText}`:"下一步：—");
-    return;
-  }
+  swapText(document.getElementById("sceneEyebrow"),scene.preset.eyebrow||"LIVE SCENE");
+  swapText(document.getElementById("focusTitle"),scene.focusTitle||"—");
+  swapText(document.getElementById("sceneChip"),scene.chipText?`阶段 · ${scene.chipText}`:"阶段 · —");
+  document.getElementById("sceneRange").textContent=scene.rangeText||"--:-- → --:--";
+  document.getElementById("focusDesc").textContent=scene.focusDesc||"—";
+  flapSet(document.getElementById("focusRemainFlap"),scene.remain||"--:--:--",22);
+  swapText(document.getElementById("focusNext"),scene.heroNextText||scene.nextLabel||"—");
+  document.getElementById("sceneProgressText").textContent=scene.progressText||"—";
+  document.getElementById("sceneProgressMeta").textContent=scene.sceneMeta||"—";
+  document.getElementById("focusMeterSub").textContent=scene.meterSub||"—";
+  document.getElementById("scenePulseText").textContent=scene.pulseText||"等待切换";
+  document.getElementById("sceneProgressBar").style.width=`${Math.round(clamp(scene.progress||0,0,1)*100)}%`;
+  document.getElementById("sceneFlipText").textContent=scene.flipText||"SYNC";
 
-  const {segs,typeInfo}=segmentsForDay(todayStr);
-  const curMin=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
-
-  let current=null,next=null,leftSec=0;
-  for(let i=0;i<segs.length;i++){
-    const a=toMinutes(segs[i].start);
-    const b=toMinutes(segs[i].end);
-    if(curMin>=a && curMin<b){
-      current=segs[i];
-      next=segs[i+1]||null;
-      leftSec=Math.max(0,Math.floor((b-curMin)*60));
-      break;
-    }
-  }
-
-  if(!current){
-    swapText(document.getElementById("liveStatus"),"—");
-    document.getElementById("liveNext").textContent="—";
-    swapText(document.getElementById("focusTitle"),"—");
-    document.getElementById("focusDesc").textContent="—";
-    flapSet(document.getElementById("focusRemainFlap"),"--:--:--",22);
-    swapText(document.getElementById("focusNext"),"—");
-    return;
-  }
-
-  const o=diffDHMS(leftSec*1000);
-  const remain=`${pad2(o.h)}:${pad2(o.m)}:${pad2(o.s)}`;
-
-  const newStatus=`${current.name}（${typeLabel(typeInfo.type)}）`;
-  const prevStatus=state._prevLiveStatus||"";
-  if(prevStatus!==newStatus){
-    swapText(document.getElementById("liveStatus"),newStatus);
-    state._prevLiveStatus=newStatus;
-  }
-  document.getElementById("liveNext").textContent=next?`下一时段：${next.name}（${next.start}）`:"下一时段：—";
-
-  const newFocusTitle=newStatus;
-  const prevFocusTitle=state._prevFocusTitle||"";
-  if(prevFocusTitle!==newFocusTitle){
-    swapText(document.getElementById("focusTitle"),newFocusTitle);
-    state._prevFocusTitle=newFocusTitle;
-  }
-  document.getElementById("focusDesc").textContent=`${typeInfo.reason} · 时段：${current.start}-${current.end}`;
-
-  flapSet(document.getElementById("focusRemainFlap"),remain,22);
-  swapText(document.getElementById("focusNext"),next?`下一时段：${next.name}（${next.start}）`:"下一时段：—");
+  state._prevLiveStatus=scene.statusLabel||"";
+  state._prevFocusTitle=scene.focusTitle||"";
+  state.lastSceneToken=scene.token;
+  state.lastSceneSnapshot=scene;
+  state.sceneReady=true;
 }
 
 function updateDash(){
@@ -1938,7 +2500,7 @@ function renderModal(){
       <div class="panel" style="box-shadow:none">
         <div class="panelHead"><b>提示</b></div>
         <div class="panelBody">
-          <div class="hint">界面已全部还原为常规文本播报形式，无额外复杂动画。</div>
+          <div class="hint">主页现在会根据时段自动切换场景色与舞台播报；课堂、放学、返程等关键边界会触发整屏过场，适合直接拿来做更强烈的状态提示。</div>
         </div>
       </div>
     </div>`;
@@ -2288,11 +2850,13 @@ function renderModal(){
 }
 
 function runAnimationTest(){
-  waveOnce();
-  pulseDash();
-  const fc=document.getElementById("flipClock");
-  fc.classList.add("flipped");
-  setTimeout(()=>fc.classList.remove("flipped"),800);
+  playTransitionFX({
+    kicker:"DISMISSAL BURST",
+    title:"放学模式启动",
+    sub:"课堂节奏 → 放学返程",
+    intense:true,
+    flipText:"GO"
+  });
 
   flapSet(document.getElementById("cdTimeFlap"),"88:88:88",28);
   flapSet(document.getElementById("focusRemainFlap"),"88:88:88",22);
@@ -2303,11 +2867,14 @@ function runAnimationTest(){
 }
 
 function dayChangeAnimation(){
-  waveOnce();
-  pulseDash();
-  const fc=document.getElementById("flipClock");
-  fc.classList.add("flipped");
-  setTimeout(()=>fc.classList.remove("flipped"),700);
+  state.sceneReady=false;
+  playTransitionFX({
+    kicker:"NEW DAY",
+    title:"新的一天已接入",
+    sub:state.lastDayStr||"课程矩阵重载",
+    intense:false,
+    flipText:"DAY"
+  });
 }
 
 const state={
@@ -2315,8 +2882,12 @@ const state={
   selectedDate:null,
   viewMonth:null,
   toastTimer:null,
+  transitionTimer:null,
   modalTab:"basic",
   lastDayStr:null,
+  lastSceneToken:"",
+  lastSceneSnapshot:null,
+  sceneReady:false,
   _prevLiveStatus:"",
   _prevFocusTitle:""
 };
